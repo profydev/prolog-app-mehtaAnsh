@@ -31,6 +31,18 @@ describe("Sidebar Navigation", () => {
         .should("have.attr", "href", "/dashboard/settings");
     });
 
+    it("should have correct mailto link", () => {
+      cy.window().then((win) => {
+        // Stub window.location.href
+        cy.stub(win, "location").as("windowLocation");
+      });
+      cy.get("nav").contains("Support").click();
+      cy.get("@windowLocation").should(
+        "be.calledWith",
+        "mailto:support@prolog-app.com?subject=Support%20Request:",
+      );
+    });
+
     it("is collapsible", () => {
       // collapse navigation
       cy.get("nav").contains("Collapse").click();
